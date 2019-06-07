@@ -19,10 +19,10 @@ exports.up = function(knex, Promise) {
         .onUpdate('CASCADE');
   
         tbl
-        .integer('quantity_id')
+        .integer('measurement_id')
         .unsigned()
         .references('id')
-        .inTable('quantity')
+        .inTable('measurements')
         .onDelete('RESTRICT')
         .onUpdate('CASCADE');
 
