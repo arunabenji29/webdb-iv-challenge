@@ -42,3 +42,100 @@ Organize and name your files anyway you see fit.
 - add _units of measure_ support for the **ingredient**s.
 - design and build a front end client for your API.
 - add a `getShoppingList(recipeId)` that returns a list of all the recipe's ingredients including the quantity of each.
+
+
+exports.up = function(knex, Promise) {
+  return knex.schema.createTable('dishes',function(tbl) {
+      tbl.increments();
+
+      tbl
+      .string('dishName',128)
+      .notNullable()
+      .unique();
+  });
+};
+
+exports.down = function(knex, Promise) {
+  return knex.schema.dropTableIfExists('dishes');
+};
+
+
+
+exports.up = function(knex, Promise) {
+    return knex.schema.createTable('recipes' , function(tbl) {
+        tbl.increments()
+  
+        tbl
+        .string('recipeName',255)
+        .notNullable()
+        .unique();
+  
+        tbl
+        .string('instructions',900)
+        .notNullable()
+        .unique();
+  
+        tbl
+        .integer('dish_id')
+        .unsigned()
+        .references('id')
+        .inTable('dishes')
+        .onDelete('RESTRICT')
+        .onUpdate('CASCADE');
+  
+        
+    })
+  };
+  
+  exports.down = function(knex, Promise) {
+    return knex.schema.dropTableIfExists('recipes')
+  };
+
+
+
+  exports.up = function(knex, Promise) {
+  return knex.schema.createTable('ingredients', function(tbl){
+      tbl.increments()
+
+      tbl
+      .string('ingredient',128)
+      .notNullable()
+      .unique();
+  })
+};
+
+exports.down = function(knex, Promise) {
+  return knex.schema.dropTableIfExists('ingredients')
+};
+
+
+exports.up = function(knex, Promise) {
+  return knex.schema.createTable('recipes_ingredients', function(tbl) {
+      tbl.increments()
+
+      tbl
+      .integer('recipe_id')
+      .unsigned()
+      .references('id')
+      .inTable('recipes')
+      .onDelete('RESTRICT')
+      .onUpdate('CASCADE');
+
+      tbl
+      .integer('ingredient_id')
+      .unsigned()
+      .references('id')
+      .inTable('ingredients')
+      .onDelete('RESTRICT')
+      .onUpdate('CASCADE');
+
+      tbl
+      .string('quantity',255)
+      .notNullable()
+      .unique();
+  })
+};
+
+exports.down = function(knex, Promise) {
+  
+};
